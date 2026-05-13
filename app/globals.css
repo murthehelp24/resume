@@ -3,15 +3,15 @@
 :root {
   --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, sans-serif;
-  --background: #0a0a0f;
-  --foreground: #e4e4e7;
-  --muted: #a1a1aa;
-  --accent: #8b5cf6;
-  --accent-hover: #a78bfa;
-  --card: #18181b;
-  --card-border: #27272a;
-  --gradient-start: #6366f1;
-  --gradient-end: #ec4899;
+  --background: #BCBCAE;
+  --foreground: #1C2116;
+  --muted: #5E6158;
+  --accent: #D2E603;
+  --accent-hover: #E2F504;
+  --card: #C9C9BB;
+  --card-border: #A8A89A;
+  --gradient-start: #D2E603;
+  --gradient-end: #1C2116;
 }
 
 html,
@@ -24,6 +24,19 @@ body {
   scroll-behavior: smooth;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Organic blob background pattern (landonorris.com style) ─── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='700' viewBox='0 0 900 700'%3E%3Cpath d='M120 80 C60 20, -20 80, 20 180 C60 280, 180 260, 200 340 C220 420, 120 460, 160 520 C200 580, 320 560, 360 480 C400 400, 340 320, 380 240 C420 160, 520 180, 500 100 C480 20, 380 -20, 300 40 C220 100, 180 140, 120 80Z' fill='%23AAAAAA' opacity='0.35'/%3E%3Cpath d='M600 120 C540 40, 440 60, 420 160 C400 260, 480 300, 460 400 C440 500, 320 520, 360 620 C400 720, 540 700, 600 620 C660 540, 620 440, 680 380 C740 320, 860 360, 880 260 C900 160, 800 40, 700 60 C650 70, 640 180, 600 120Z' fill='%23AAAAAA' opacity='0.28'/%3E%3Cpath d='M300 400 C240 340, 140 360, 120 460 C100 560, 200 620, 280 580 C360 540, 380 460, 460 440 C540 420, 620 480, 660 420 C700 360, 660 260, 580 240 C500 220, 440 300, 380 320 C320 340, 340 440, 300 400Z' fill='%23A5A598' opacity='0.32'/%3E%3Cpath d='M720 480 C680 400, 580 420, 560 520 C540 620, 640 680, 720 660 C800 640, 840 560, 820 500 C810 470, 750 550, 720 480Z' fill='%23AAAAAA' opacity='0.25'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 900px 700px;
 }
 
 a {
@@ -56,15 +69,15 @@ a {
 .glass {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.10);
 }
 
 .glass-strong {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--card-border);
-  background: rgba(24, 24, 27, 0.8);
+  background: rgba(188, 188, 174, 0.88);
 }
 
 .gradient-text {
@@ -90,7 +103,7 @@ a {
   display: inline-block;
   background-image: linear-gradient(110deg,
       transparent 45%,
-      rgba(255, 255, 255, 0.7) 50%,
+      rgba(210, 230, 3, 0.8) 50%,
       transparent 55%),
     linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
   background-size: 200% 100%, 100% 100%;
