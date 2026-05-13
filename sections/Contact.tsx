@@ -13,7 +13,7 @@ export function Contact() {
       title: "GitHub",
       desc: "Check out my source code and projects.",
       href: socials.find((s) => s.name === "GitHub")?.url ?? "#",
-      color: "from-violet-500 to-purple-500",
+      color: "from-[#D2E603] to-[#6E7A61]",
     },
     {
       key: "resume",
@@ -21,7 +21,7 @@ export function Contact() {
       title: "Resume",
       desc: "Download my PDF resume.",
       href: "#",
-      color: "from-amber-500 to-orange-500",
+      color: "from-[#D9E0D1] to-[#D2E603]",
     },
     {
       key: "email",
@@ -29,7 +29,7 @@ export function Contact() {
       title: "Email",
       desc: "Contact me directly via email.",
       href: socials.find((s) => s.name === "Email")?.url ?? "#",
-      color: "from-blue-500 to-cyan-500",
+      color: "from-[#6E7A61] to-[#D2E603]",
     },
   ];
 

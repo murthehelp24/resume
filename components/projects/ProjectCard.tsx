@@ -46,7 +46,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-linear-to-r from-purple-600 via-violet-600 to-fuchsia-600 px-2.5 py-1.5 text-[10px] font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/50 md:text-xs"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-(--accent) px-2.5 py-1.5 text-[10px] font-semibold text-black transition-all duration-300 hover:shadow-lg hover:shadow-(--accent)/30 md:text-xs"
               >
                 <FaGithub size={12} />
                 GitHub

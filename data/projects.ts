@@ -21,7 +21,7 @@ export const projects: Project[] = [
     github: "https://github.com/yourusername/dongcard",
     featured: true,
     deviceType: "desktop",
-    bgColor: "bg-linear-to-br from-violet-500/90 to-fuchsia-500/90",
+    bgColor: "bg-linear-to-br from-[#D2E603]/80 to-[#1B2118]/80",
     screenshots: [
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1400&auto=format&fit=crop",
     ],
@@ -35,7 +35,7 @@ export const projects: Project[] = [
     github: "https://github.com/yourusername/onlyfriendssss",
     featured: true,
     deviceType: "mobile",
-    bgColor: "bg-linear-to-br from-blue-500/90 to-cyan-500/90",
+    bgColor: "bg-linear-to-br from-[#6E7A61]/90 to-[#1B2118]/90",
     screenshots: [
       "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=900&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1526498460520-4c246339dccb?q=80&w=900&auto=format&fit=crop",
@@ -51,7 +51,7 @@ export const projects: Project[] = [
     github: "https://github.com/yourusername/resume",
     featured: true,
     deviceType: "desktop",
-    bgColor: "bg-linear-to-br from-emerald-500/90 to-teal-500/90",
+    bgColor: "bg-linear-to-br from-[#1B2118]/90 to-[#D2E603]/70",
     screenshots: [
       "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1400&auto=format&fit=crop",
     ],
@@ -65,7 +65,7 @@ export const projects: Project[] = [
     github: "https://github.com/yourusername/news-app",
     featured: true,
     deviceType: "mobile",
-    bgColor: "bg-linear-to-br from-purple-500/90 to-pink-500/90",
+    bgColor: "bg-linear-to-br from-[#D2E603]/90 to-[#6E7A61]/90",
     screenshots: [
       "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=900&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1573164574572-cb89e39749b4?q=80&w=900&auto=format&fit=crop",
