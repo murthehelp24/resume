@@ -32,9 +32,7 @@ export const projects: Project[] = [
     featured: true,
     deviceType: "mobile",
     bgColor: "bg-linear-to-br from-orange-600/90 to-red-600/90",
-    screenshots: [
-      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=900&auto=format&fit=crop",
-    ],
+    screenshots: ["/projects/onlyfriendssss.png"],
   },
   {
     id: "dongcard",
