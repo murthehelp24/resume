@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
 
+// ─── Types ──────────────────────────────────────────────────────────────────
+
 interface AmbientStar {
   x: number;
   y: number;
@@ -11,378 +13,448 @@ interface AmbientStar {
   phase: number;
 }
 
-interface SparkleParticle {
+interface CometTrailPoint {
+  x: number;
+  y: number;
+  alpha: number;
+  size: number;
+  color: string;
+}
+
+interface ShootingStar {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  length: number;
+  alpha: number;
+  color: string;
+  active: boolean;
+}
+
+interface StarBurst {
   x: number;
   y: number;
   vx: number;
   vy: number;
   size: number;
-  maxSize: number;
   alpha: number;
+  decay: number;
   color: string;
   rotation: number;
-  rotationSpeed: number;
-  decay: number;
-  type: "star" | "nebula" | "meteor";
 }
+
+// ─── Component ───────────────────────────────────────────────────────────────
 
 export function InteractiveBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ambientStarsRef = useRef<AmbientStar[]>([]);
-  const particleArrayRef = useRef<SparkleParticle[]>([]);
-  const lastMousePos = useRef({ x: 0, y: 0 });
 
-  const mouseX = useMotionValue(-1000); // Start off-screen
+  // Comet trail: an array of past mouse positions with fading alpha
+  const trailRef = useRef<CometTrailPoint[]>([]);
+
+  // Autonomous shooting stars crossing the sky
+  const shootingStarsRef = useRef<ShootingStar[]>([]);
+
+  // Small sparkle burst particles that shoot off trail
+  const starBurstsRef = useRef<StarBurst[]>([]);
+
+  const mousePos = useRef({ x: -1000, y: -1000 });
+  const prevMousePos = useRef({ x: -1000, y: -1000 });
+
+  const mouseX = useMotionValue(-1000);
   const mouseY = useMotionValue(-1000);
 
-  // Smooth springs for mouse follower spotlight
-  const springConfig = { damping: 30, stiffness: 180 };
+  const springConfig = { damping: 25, stiffness: 160 };
   const smoothX = useSpring(mouseX, springConfig);
   const smoothY = useSpring(mouseY, springConfig);
 
   const [isDark, setIsDark] = useState(true);
 
-  // Track light/dark mode changes
+  // ── Theme observer ────────────────────────────────────────────────────────
   useEffect(() => {
-    const checkTheme = () => {
+    const checkTheme = () =>
       setIsDark(document.documentElement.classList.contains("dark"));
-    };
     checkTheme();
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
+    const obs = new MutationObserver(checkTheme);
+    obs.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => obs.disconnect();
   }, []);
 
-  // Handle window resizing and high DPI scaling
+  // ── Canvas sizing + ambient star generation ───────────────────────────────
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const resizeCanvas = () => {
+    const resize = () => {
       const dpr = window.devicePixelRatio || 1;
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
       ctx.scale(dpr, dpr);
 
-      // Generate static background stars
-      const stars: AmbientStar[] = [];
-      const starCount = Math.floor((width * height) / 18000); // Dense cosmic sky (approx 1 star per 18k pixels)
-      for (let i = 0; i < Math.min(starCount, 120); i++) {
-        stars.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          size: Math.random() * 1.6 + 0.4,
-          twinkleSpeed: Math.random() * 0.015 + 0.005,
-          phase: Math.random() * Math.PI * 2,
-        });
-      }
-      ambientStarsRef.current = stars;
+      // Generate ambient twinkle stars
+      const count = Math.min(Math.floor((w * h) / 14000), 150);
+      ambientStarsRef.current = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        size: Math.random() * 1.8 + 0.3,
+        twinkleSpeed: Math.random() * 0.018 + 0.004,
+        phase: Math.random() * Math.PI * 2,
+      }));
     };
 
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-
-    return () => {
-      window.removeEventListener("resize", resizeCanvas);
-    };
+    window.addEventListener("resize", resize);
+    resize();
+    return () => window.removeEventListener("resize", resize);
   }, []);
 
-  // Spawn new cosmic particles
-  const spawnParticle = (x: number, y: number) => {
-    const particles = particleArrayRef.current;
-    if (particles.length > 130) {
-      particles.shift();
-    }
-
-    const rand = Math.random();
-    let type: "star" | "nebula" | "meteor" = "star";
-    let size = Math.random() * 3.5 + 1.5;
-    let decay = Math.random() * 0.012 + 0.008; // Slower decay for beautiful trails
-    let vx = (Math.random() - 0.5) * 2.2;
-    let vy = (Math.random() - 0.5) * 2.2 - 0.15; // Slow upward drift
-
-    // Cosmic space palette: Deep Violet, Electric Cyan, Galactic Pink, Starlight White, Solar Gold
-    const darkColors = ["#a855f7", "#06b6d4", "#ec4899", "#ffffff", "#fef08a"];
-    const lightColors = ["#7c3aed", "#0891b2", "#db2777", "#475569", "#d97706"];
-    const colors = isDark ? darkColors : lightColors;
-    const color = colors[Math.floor(Math.random() * colors.length)];
-
-    if (rand < 0.18) {
-      // 18% Shooting meteors: fast, long streaks, decay quickly
-      type = "meteor";
-      size = Math.random() * 2.0 + 1.2;
-      decay = Math.random() * 0.025 + 0.02; // Rapid decay
-      vx = (Math.random() - 0.5) * 6.5;
-      vy = (Math.random() - 0.5) * 6.5 - 0.6;
-    } else if (rand < 0.52) {
-      // 34% Nebula gas dust: very large, slow floating, low opacity
-      type = "nebula";
-      size = Math.random() * 14 + 8;
-      decay = Math.random() * 0.009 + 0.005; // Float longer
-      vx = (Math.random() - 0.5) * 0.6;
-      vy = (Math.random() - 0.5) * 0.6 - 0.1;
-    } else {
-      // 48% Twinkling 4-pointed stars
-      type = "star";
-      size = Math.random() * 4.0 + 1.8;
-      decay = Math.random() * 0.014 + 0.008;
-      vx = (Math.random() - 0.5) * 1.8;
-      vy = (Math.random() - 0.5) * 1.8 - 0.2;
-    }
-
-    particles.push({
-      x,
-      y,
-      vx,
-      vy,
-      size,
-      maxSize: size * 1.5,
-      alpha: 1.0,
-      color,
-      rotation: Math.random() * Math.PI * 2,
-      rotationSpeed: (Math.random() - 0.5) * 0.07,
-      decay,
-      type,
-    });
-  };
-
-  // Setup mouse tracking and particle spawning
+  // ── Mouse tracker ─────────────────────────────────────────────────────────
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
+    const onMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
-
-      const dx = e.clientX - lastMousePos.current.x;
-      const dy = e.clientY - lastMousePos.current.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
-      // Spawn trails proportionally to movement distance
-      if (dist > 5) {
-        const count = Math.min(Math.floor(dist / 6) + 1, 3);
-        for (let i = 0; i < count; i++) {
-          const offsetX = (Math.random() - 0.5) * 12;
-          const offsetY = (Math.random() - 0.5) * 12;
-          spawnParticle(e.clientX + offsetX, e.clientY + offsetY);
-        }
-        lastMousePos.current = { x: e.clientX, y: e.clientY };
-      }
+      prevMousePos.current = { ...mousePos.current };
+      mousePos.current = { x: e.clientX, y: e.clientY };
     };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, [mouseX, mouseY]);
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [mouseX, mouseY, isDark]);
-
-  // Canvas animation loop
+  // ── Main render loop ──────────────────────────────────────────────────────
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let animationFrameId: number;
+    // Comet colours (head → tail gradient)
+    const COMET_COLORS_DARK = [
+      "#ffffff",  // head — pure white
+      "#e0f2fe",  // ice-blue
+      "#a5f3fc",  // cyan
+      "#818cf8",  // indigo
+      "#c084fc",  // violet
+      "#f0abfc",  // magenta
+    ];
+    const COMET_COLORS_LIGHT = [
+      "#4f46e5",
+      "#7c3aed",
+      "#9333ea",
+      "#0891b2",
+      "#0e7490",
+    ];
 
-    // Draw a flared 4-pointed star
-    const drawSparkle = (c: CanvasRenderingContext2D, x: number, y: number, size: number, rotation: number) => {
+    const STARBURST_COLORS_DARK = ["#ffffff", "#a5f3fc", "#c084fc", "#fde68a", "#6ee7b7"];
+    const STARBURST_COLORS_LIGHT = ["#6366f1", "#0891b2", "#7c3aed", "#d97706", "#059669"];
+
+    let raf: number;
+    let frameCount = 0;
+
+    // Helper: draw a sharp 4-pointed star/sparkle
+    const drawStar4 = (
+      c: CanvasRenderingContext2D,
+      x: number,
+      y: number,
+      size: number,
+      rot: number
+    ) => {
       c.save();
       c.translate(x, y);
-      c.rotate(rotation);
+      c.rotate(rot);
       c.beginPath();
       c.moveTo(0, -size);
-      c.quadraticCurveTo(0, 0, size, 0);
+      c.quadraticCurveTo(0, 0, size * 0.35, 0);
       c.quadraticCurveTo(0, 0, 0, size);
-      c.quadraticCurveTo(0, 0, -size, 0);
+      c.quadraticCurveTo(0, 0, -size * 0.35, 0);
       c.quadraticCurveTo(0, 0, 0, -size);
       c.closePath();
       c.fill();
       c.restore();
     };
 
-    const render = () => {
-      const width = canvas.width / (window.devicePixelRatio || 1);
-      const height = canvas.height / (window.devicePixelRatio || 1);
-      ctx.clearRect(0, 0, width, height);
+    // Spawn an autonomous shooting star from a random edge
+    const spawnShootingStar = () => {
+      const w = canvas.width / (window.devicePixelRatio || 1);
+      const h = canvas.height / (window.devicePixelRatio || 1);
 
-      // Compositing for premium neon space-glow look
+      // Spawn from top edge or left edge
+      const fromTop = Math.random() > 0.4;
+      const x = fromTop ? Math.random() * w : -20;
+      const y = fromTop ? -20 : Math.random() * (h * 0.5);
+
+      // Velocity aimed diagonally down-right
+      const speed = Math.random() * 12 + 8;
+      const angle = fromTop
+        ? (Math.PI / 4) + (Math.random() - 0.5) * (Math.PI / 6)
+        : (Math.random() * Math.PI) / 8;
+
+      const colors = isDark
+        ? ["#ffffff", "#e0f2fe", "#a5f3fc", "#c7d2fe"]
+        : ["#6366f1", "#0891b2", "#4f46e5", "#7c3aed"];
+
+      shootingStarsRef.current.push({
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        length: Math.random() * 100 + 80,
+        alpha: 1.0,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        active: true,
+      });
+    };
+
+    const render = () => {
+      frameCount++;
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+
+      ctx.clearRect(0, 0, w, h);
       ctx.globalCompositeOperation = isDark ? "screen" : "source-over";
 
-      // 1. Draw static background stars (twinkling)
+      // ── 1. Ambient twinkling background stars ─────────────────────────────
       const stars = ambientStarsRef.current;
-      for (let i = 0; i < stars.length; i++) {
-        const star = stars[i];
+      for (const star of stars) {
         star.phase += star.twinkleSpeed;
-        const alpha = 0.15 + (Math.sin(star.phase) + 1) * 0.35; // Twinkle oscillation
-
-        ctx.fillStyle = isDark ? `rgba(255, 255, 255, ${alpha})` : `rgba(75, 85, 99, ${alpha})`;
+        const alpha = 0.12 + (Math.sin(star.phase) + 1) * 0.38;
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = isDark ? "#ffffff" : "#64748b";
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      // 2. Draw dynamic cursor particles
-      const particles = particleArrayRef.current;
-
-      // 3. Draw constellation lines between nearby particles
-      const maxDistance = 65; // px distance to draw a line
-      ctx.lineWidth = 0.6;
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const p1 = particles[i];
-          const p2 = particles[j];
-
-          // Skip shooting meteors to keep constellation grids clean
-          if (p1.type === "meteor" || p2.type === "meteor") continue;
-
-          const dx = p1.x - p2.x;
-          const dy = p1.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < maxDistance) {
-            const lineAlpha = (1 - dist / maxDistance) * 0.14 * Math.min(p1.alpha, p2.alpha);
-            ctx.strokeStyle = isDark ? `rgba(168, 85, 247, ${lineAlpha})` : `rgba(124, 58, 237, ${lineAlpha})`; // Cosmic purple line
-            ctx.beginPath();
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-          }
-        }
+      // ── 2. Autonomous shooting stars ──────────────────────────────────────
+      // Spawn one randomly every ~120 frames
+      if (frameCount % 120 === 0 && Math.random() > 0.35) {
+        spawnShootingStar();
       }
 
-      // 4. Draw constellation lines connecting particles to the mouse pointer
-      const cx = mouseX.get();
-      const cy = mouseY.get();
-      if (cx > -500 && cy > -500) {
-        for (let i = 0; i < particles.length; i++) {
-          const p = particles[i];
-          if (p.type === "meteor") continue;
+      const ss = shootingStarsRef.current;
+      for (let i = ss.length - 1; i >= 0; i--) {
+        const s = ss[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.alpha -= 0.012;
 
-          const dx = p.x - cx;
-          const dy = p.y - cy;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < 80) {
-            const lineAlpha = (1 - dist / 80) * 0.12 * p.alpha;
-            ctx.strokeStyle = isDark ? `rgba(6, 182, 212, ${lineAlpha})` : `rgba(8, 145, 178, ${lineAlpha})`; // Cosmic cyan line to cursor
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(cx, cy);
-            ctx.stroke();
-          }
-        }
-      }
-
-      // 5. Draw particles
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vx *= 0.96; // Air drag
-        p.vy *= 0.96;
-        p.rotation += p.rotationSpeed;
-        p.alpha -= p.decay;
-
-        if (p.alpha <= 0) {
-          particles.splice(i, 1);
+        if (s.alpha <= 0 || s.x > w + 50 || s.y > h + 50) {
+          ss.splice(i, 1);
           continue;
         }
 
-        ctx.fillStyle = p.color;
-        
-        // Neon glow setup in Dark Mode
+        // Draw the shooting star as a gradient line
+        const tailX = s.x - (s.vx / Math.hypot(s.vx, s.vy)) * s.length;
+        const tailY = s.y - (s.vy / Math.hypot(s.vx, s.vy)) * s.length;
+
+        const grad = ctx.createLinearGradient(tailX, tailY, s.x, s.y);
+        grad.addColorStop(0, `rgba(255,255,255,0)`);
+        grad.addColorStop(0.6, `rgba(255,255,255,${s.alpha * 0.3})`);
+        grad.addColorStop(1, s.color);
+
+        ctx.globalAlpha = s.alpha;
         if (isDark) {
-          ctx.shadowColor = p.color;
-          ctx.shadowBlur = p.type === "star" ? 8 : (p.type === "meteor" ? 4 : 0);
+          ctx.shadowColor = s.color;
+          ctx.shadowBlur = 8;
         }
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(tailX, tailY);
+        ctx.lineTo(s.x, s.y);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
 
-        const currentSize = p.size * (0.4 + p.alpha * 0.6);
+        // Tiny sparkle at the head
+        ctx.fillStyle = "#ffffff";
+        ctx.globalAlpha = s.alpha * 0.9;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
 
-        if (p.type === "star") {
-          ctx.globalAlpha = p.alpha;
-          drawSparkle(ctx, p.x, p.y, currentSize, p.rotation);
-        } else if (p.type === "meteor") {
-          ctx.globalAlpha = p.alpha * 0.75;
-          ctx.strokeStyle = p.color;
-          ctx.lineWidth = currentSize * 0.7;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p.x - p.vx * 1.8, p.y - p.vy * 1.8); // Shoot streak
-          ctx.stroke();
-        } else {
-          // Nebula cloud: large, very soft & transparent
-          ctx.globalAlpha = p.alpha * 0.18;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, currentSize, 0, Math.PI * 2);
-          ctx.fill();
-        }
+      // ── 3. Mouse comet trail ──────────────────────────────────────────────
+      const mx = mousePos.current.x;
+      const my = mousePos.current.y;
 
-        if (isDark) {
-          ctx.shadowBlur = 0; // Reset shadow blur
+      if (mx > -500 && my > -500) {
+        const colors = isDark ? COMET_COLORS_DARK : COMET_COLORS_LIGHT;
+        const colorIdx = Math.floor(Math.random() * 3); // bias toward head colors
+
+        // Push new trail point at cursor
+        trailRef.current.push({
+          x: mx + (Math.random() - 0.5) * 4,
+          y: my + (Math.random() - 0.5) * 4,
+          alpha: 1.0,
+          size: Math.random() * 3.5 + 2,
+          color: colors[colorIdx],
+        });
+
+        // Occasionally spawn a starburst sparkle
+        if (Math.random() < 0.22) {
+          const bc = isDark ? STARBURST_COLORS_DARK : STARBURST_COLORS_LIGHT;
+          starBurstsRef.current.push({
+            x: mx,
+            y: my,
+            vx: (Math.random() - 0.5) * 3.5,
+            vy: (Math.random() - 0.5) * 3.5 - 0.8,
+            size: Math.random() * 5 + 2.5,
+            alpha: 1.0,
+            decay: Math.random() * 0.022 + 0.012,
+            color: bc[Math.floor(Math.random() * bc.length)],
+            rotation: Math.random() * Math.PI * 2,
+          });
         }
       }
 
+      // Trim trail length (keep last 60 points = ~1 second of trail at 60fps)
+      const MAX_TRAIL = 60;
+      const trail = trailRef.current;
+      if (trail.length > MAX_TRAIL) trail.splice(0, trail.length - MAX_TRAIL);
+
+      // Draw comet trail (oldest → newest, fading)
+      const trailColors = isDark ? COMET_COLORS_DARK : COMET_COLORS_LIGHT;
+      for (let i = trail.length - 1; i >= 0; i--) {
+        const p = trail[i];
+        // Each point fades as it gets older (position in array = age)
+        p.alpha = (i / trail.length) * 0.95;
+
+        const tailColorIdx = Math.min(
+          Math.floor(((trail.length - 1 - i) / trail.length) * trailColors.length),
+          trailColors.length - 1
+        );
+        const color = trailColors[tailColorIdx];
+
+        ctx.globalAlpha = p.alpha;
+        if (isDark) {
+          ctx.shadowColor = color;
+          ctx.shadowBlur = 6;
+        }
+        ctx.fillStyle = color;
+
+        // Draw a small glowing disc for each trail point
+        const sz = p.size * p.alpha + 0.5;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, sz, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      // Comet head glow: brightest white circle at cursor
+      if (mx > -500 && my > -500) {
+        ctx.globalAlpha = 0.85;
+        if (isDark) {
+          ctx.shadowColor = "#ffffff";
+          ctx.shadowBlur = 18;
+        }
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.arc(mx, my, 2.8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      // ── 4. Star burst particles ───────────────────────────────────────────
+      const bursts = starBurstsRef.current;
+      for (let i = bursts.length - 1; i >= 0; i--) {
+        const b = bursts[i];
+        b.x += b.vx;
+        b.y += b.vy;
+        b.vx *= 0.93;
+        b.vy *= 0.93;
+        b.alpha -= b.decay;
+        b.rotation += 0.05;
+
+        if (b.alpha <= 0) {
+          bursts.splice(i, 1);
+          continue;
+        }
+
+        ctx.globalAlpha = b.alpha * 0.9;
+        ctx.fillStyle = b.color;
+        if (isDark) {
+          ctx.shadowColor = b.color;
+          ctx.shadowBlur = 6;
+        }
+        drawStar4(ctx, b.x, b.y, b.size * b.alpha, b.rotation);
+        ctx.shadowBlur = 0;
+      }
+
+      // Trim bursts pool
+      if (bursts.length > 80) bursts.splice(0, bursts.length - 80);
+
       ctx.globalAlpha = 1.0;
-      animationFrameId = requestAnimationFrame(render);
+      raf = requestAnimationFrame(render);
     };
 
     render();
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-    };
+    return () => cancelAnimationFrame(raf);
   }, [isDark]);
 
+  // ── JSX ───────────────────────────────────────────────────────────────────
   return (
     <div className="pointer-events-none fixed inset-0 -z-10 bg-(--background) transition-colors duration-500 overflow-hidden">
-      {/* Dynamic Cosmic Mouse-Follower Glow */}
+      {/* Mouse-follower nebula glow (large soft spotlight) */}
       <motion.div
-        className="absolute h-[900px] w-[900px] rounded-full mix-blend-screen dark:mix-blend-plus-lighter"
+        className="absolute h-[800px] w-[800px] rounded-full"
         style={{
           left: smoothX,
           top: smoothY,
           x: "-50%",
           y: "-50%",
           background: isDark
-            ? "radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(6, 182, 212, 0.1) 45%, transparent 70%)" // Purple-Cyan mix
-            : "radial-gradient(circle, rgba(167, 139, 250, 0.15) 0%, rgba(103, 232, 249, 0.08) 50%, transparent 70%)",
-          filter: "blur(60px)",
+            ? "radial-gradient(circle, rgba(129,140,248,0.18) 0%, rgba(6,182,212,0.08) 50%, transparent 70%)"
+            : "radial-gradient(circle, rgba(99,102,241,0.12) 0%, rgba(8,145,178,0.06) 55%, transparent 72%)",
+          filter: "blur(55px)",
+          mixBlendMode: isDark ? "screen" : "normal",
         }}
       />
 
-      {/* Static Ambient Orbs - Top Left (Cosmic Purple) */}
+      {/* Static ambient orb — top-left (cosmic purple) */}
       <div
-        className="absolute -top-[10%] -left-[10%] h-[600px] w-[600px] rounded-full opacity-25 blur-[130px] dark:opacity-20"
-        style={{ background: isDark ? "rgba(139, 92, 246, 0.25)" : "rgba(167, 139, 250, 0.15)" }}
+        className="absolute -top-[12%] -left-[8%] h-[550px] w-[550px] rounded-full blur-[120px]"
+        style={{
+          opacity: isDark ? 0.22 : 0.12,
+          background: isDark ? "rgba(139,92,246,0.35)" : "rgba(167,139,250,0.2)",
+        }}
       />
 
-      {/* Static Ambient Orbs - Bottom Right (Cosmic Cyan) */}
+      {/* Static ambient orb — bottom-right (cosmic cyan) */}
       <div
-        className="absolute -bottom-[10%] -right-[10%] h-[700px] w-[700px] rounded-full opacity-20 blur-[150px] dark:opacity-15"
-        style={{ background: isDark ? "rgba(6, 182, 212, 0.15)" : "rgba(103, 232, 249, 0.1)" }}
+        className="absolute -bottom-[12%] -right-[8%] h-[650px] w-[650px] rounded-full blur-[140px]"
+        style={{
+          opacity: isDark ? 0.18 : 0.1,
+          background: isDark ? "rgba(6,182,212,0.2)" : "rgba(103,232,249,0.12)",
+        }}
       />
 
-      {/* Fine Noise Texture */}
+      {/* Noise texture overlay */}
       <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
-      {/* Subtle Grid Pattern */}
+      {/* Subtle dot grid */}
       <div
         className="absolute inset-0 opacity-[0.04]"
         style={{
           backgroundImage:
-            "linear-gradient(var(--card-border) 1px, transparent 1px), linear-gradient(90deg, var(--card-border) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
+            "radial-gradient(circle, var(--card-border) 1px, transparent 1px)",
+          backgroundSize: "50px 50px",
         }}
       />
 
-      {/* High-fidelity Canvas for sparkles and constellation layers */}
-      <canvas ref={canvasRef} className="absolute inset-0 block w-full h-full pointer-events-none" />
+      {/* High-DPI canvas for comet trail + shooting stars + sparkles */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 block w-full h-full pointer-events-none"
+      />
     </div>
   );
 }
