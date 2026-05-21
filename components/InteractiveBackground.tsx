@@ -222,21 +222,23 @@ export function InteractiveBackground() {
       ctx.clearRect(0, 0, w, h);
       ctx.globalCompositeOperation = isDark ? "screen" : "source-over";
 
+      const isLowPerf = w < 768;
+
       // ── 1. Ambient twinkling background stars ─────────────────────────────
       const stars = ambientStarsRef.current;
+      ctx.fillStyle = isDark ? "#ffffff" : "#64748b";
       for (const star of stars) {
         star.phase += star.twinkleSpeed;
         const alpha = 0.12 + (Math.sin(star.phase) + 1) * 0.38;
         ctx.globalAlpha = alpha;
-        ctx.fillStyle = isDark ? "#ffffff" : "#64748b";
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
         ctx.fill();
       }
 
       // ── 2. Autonomous shooting stars ──────────────────────────────────────
-      // Spawn one randomly every ~120 frames
-      if (frameCount % 120 === 0 && Math.random() > 0.35) {
+      // Spawn one randomly every ~120 frames (or 180 on mobile)
+      if (frameCount % (isLowPerf ? 180 : 120) === 0 && Math.random() > 0.4) {
         spawnShootingStar();
       }
 
@@ -262,7 +264,7 @@ export function InteractiveBackground() {
         grad.addColorStop(1, s.color);
 
         ctx.globalAlpha = s.alpha;
-        if (isDark) {
+        if (isDark && !isLowPerf) {
           ctx.shadowColor = s.color;
           ctx.shadowBlur = 8;
         }
@@ -286,7 +288,8 @@ export function InteractiveBackground() {
       const mx = mousePos.current.x;
       const my = mousePos.current.y;
 
-      if (mx > -500 && my > -500) {
+      // Optimization: Throttled trail point creation (every 2 frames)
+      if (mx > -500 && my > -500 && frameCount % 2 === 0) {
         const colors = isDark ? COMET_COLORS_DARK : COMET_COLORS_LIGHT;
         const colorIdx = Math.floor(Math.random() * 3); // bias toward head colors
 
@@ -299,8 +302,8 @@ export function InteractiveBackground() {
           color: colors[colorIdx],
         });
 
-        // Occasionally spawn a starburst sparkle
-        if (Math.random() < 0.22) {
+        // Occasionally spawn a starburst sparkle (disable on mobile)
+        if (Math.random() < 0.22 && !isLowPerf) {
           const bc = isDark ? STARBURST_COLORS_DARK : STARBURST_COLORS_LIGHT;
           starBurstsRef.current.push({
             x: mx,
@@ -316,8 +319,8 @@ export function InteractiveBackground() {
         }
       }
 
-      // Trim trail length (keep last 60 points = ~1 second of trail at 60fps)
-      const MAX_TRAIL = 60;
+      // Trim trail length (keep last 60 points, or 30 on mobile)
+      const MAX_TRAIL = isLowPerf ? 30 : 60;
       const trail = trailRef.current;
       if (trail.length > MAX_TRAIL) trail.splice(0, trail.length - MAX_TRAIL);
 
@@ -335,7 +338,7 @@ export function InteractiveBackground() {
         const color = trailColors[tailColorIdx];
 
         ctx.globalAlpha = p.alpha;
-        if (isDark) {
+        if (isDark && !isLowPerf) {
           ctx.shadowColor = color;
           ctx.shadowBlur = 6;
         }
@@ -352,14 +355,14 @@ export function InteractiveBackground() {
       // Comet head glow: brightest white circle at cursor
       if (mx > -500 && my > -500) {
         ctx.globalAlpha = 0.85;
-        if (isDark) {
+        if (isDark && !isLowPerf) {
           ctx.shadowColor = "#ffffff";
           ctx.shadowBlur = 18;
           ctx.fillStyle = "#ffffff";
         } else {
           ctx.shadowColor = "#f59e0b";
-          ctx.shadowBlur = 12;
-          ctx.fillStyle = "#fbbf24";
+          ctx.shadowBlur = isLowPerf ? 0 : 12;
+          ctx.fillStyle = isDark ? "#ffffff" : "#fbbf24";
         }
         ctx.beginPath();
         ctx.arc(mx, my, 2.8, 0, Math.PI * 2);

@@ -50,19 +50,7 @@ function Thruster({ isDark, offset = 0 }: { isDark: boolean; offset?: number }) 
   );
 }
 
-export function ProceduralHumanoid() {
-  const [isDark, setIsDark] = useState(true);
-
-  useEffect(() => {
-    const checkTheme = () => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    };
-    checkTheme();
-    const observer = new MutationObserver(checkTheme);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
-
+export function ProceduralHumanoid({ isDark }: { isDark: boolean }) {
   const robotGroupRef = useRef<THREE.Group>(null);
   const headGroupRef = useRef<THREE.Group>(null);
   const chestGroupRef = useRef<THREE.Group>(null);

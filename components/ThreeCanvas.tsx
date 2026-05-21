@@ -41,6 +41,14 @@ export function ThreeCanvas() {
             intensity={isDark ? 1.2 : 1.5}
             color={isDark ? "#e6391a" : "#ffffff"}
             castShadow
+            shadow-mapSize-width={512}
+            shadow-mapSize-height={512}
+            shadow-camera-far={20}
+            shadow-camera-left={-5}
+            shadow-camera-right={5}
+            shadow-camera-top={5}
+            shadow-camera-bottom={-5}
+            shadow-bias={-0.001}
           />
 
           {/* Fill Light */}
@@ -58,7 +66,7 @@ export function ThreeCanvas() {
           />
 
           {/* Main Humanoid Model */}
-          <ProceduralHumanoid />
+          <ProceduralHumanoid isDark={isDark} />
 
 
           {/* Orbit Controls (constrained so user can rotate, but it stays locked on the hero section) */}
