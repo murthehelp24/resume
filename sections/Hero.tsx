@@ -12,11 +12,11 @@ export function Hero() {
           <p className="text-xs uppercase tracking-[0.25em] text-orange-300 sm:text-sm">
             Portfolio · {siteConfig.title}
           </p>
-          <h1 className="max-w-3xl text-4xl font-bold leading-tight sm:text-6xl lg:text-7xl">
+          <h1 className="max-w-3xl text-4xl font-bold leading-[1.1] text-pretty sm:text-6xl lg:text-7xl">
             Hi, I&apos;m{" "}
             <span className="text-gradient-shimmer">{siteConfig.name}</span>
             <br />
-            <span className="text-3xl sm:text-5xl lg:text-6xl text-(--muted)">
+            <span className="text-2xl sm:text-5xl lg:text-6xl text-(--muted)">
               {siteConfig.title}
             </span>
           </h1>

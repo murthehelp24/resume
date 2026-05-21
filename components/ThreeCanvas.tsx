@@ -20,7 +20,7 @@ export function ThreeCanvas() {
   }, []);
 
   return (
-    <div className="relative w-full h-[520px] rounded-2xl overflow-hidden">
+    <div className="relative w-full h-[420px] sm:h-[520px] rounded-2xl overflow-hidden">
       {/* 3D WebGL Canvas */}
       <Canvas
         shadows

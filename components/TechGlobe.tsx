@@ -67,8 +67,23 @@ function rotateX(p: Vec3, angle: number): Vec3 {
 const BASE = fibonacciSphere(TECH.length);
 
 export function TechGlobe() {
-  const RADIUS = 165;
-  const SIZE = 380;
+  const [size, setSize] = useState(380);
+  const [radius, setRadius] = useState(165);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setSize(300);
+        setRadius(130);
+      } else {
+        setSize(380);
+        setRadius(165);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const rotRef = useRef({ rx: 0.2, ry: 0 });
   const velRef = useRef({ vx: 0, vy: 0.004 });
@@ -150,7 +165,7 @@ export function TechGlobe() {
   return (
     <div
       className="relative mx-auto select-none cursor-grab active:cursor-grabbing"
-      style={{ width: SIZE, height: SIZE }}
+      style={{ width: size, height: size }}
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
@@ -172,18 +187,18 @@ export function TechGlobe() {
       {/* Wireframe grid lines — SVG overlay */}
       <svg
         className="absolute inset-0 pointer-events-none"
-        width={SIZE}
-        height={SIZE}
-        viewBox={`0 0 ${SIZE} ${SIZE}`}
+        width={size}
+        height={size}
+        viewBox={`0 0 ${size} ${size}`}
       >
         {/* Latitude circles */}
         {[0.25, 0.5, 0.75].map((t) => {
-          const r = RADIUS * Math.sin(Math.PI * t);
+          const r = radius * Math.sin(Math.PI * t);
           return (
             <ellipse
               key={t}
-              cx={SIZE / 2}
-              cy={SIZE / 2 - RADIUS * Math.cos(Math.PI * t)}
+              cx={size / 2}
+              cy={size / 2 - radius * Math.cos(Math.PI * t)}
               rx={r}
               ry={r * 0.28}
               fill="none"
@@ -194,29 +209,29 @@ export function TechGlobe() {
         })}
         {/* Longitude arcs (equator ellipse) */}
         <ellipse
-          cx={SIZE / 2}
-          cy={SIZE / 2}
-          rx={RADIUS}
-          ry={RADIUS * 0.28}
+          cx={size / 2}
+          cy={size / 2}
+          rx={radius}
+          ry={radius * 0.28}
           fill="none"
           stroke="rgba(139,92,246,0.15)"
           strokeWidth={0.8}
         />
         {/* Vertical circle */}
         <ellipse
-          cx={SIZE / 2}
-          cy={SIZE / 2}
-          rx={RADIUS * 0.28}
-          ry={RADIUS}
+          cx={size / 2}
+          cy={size / 2}
+          rx={radius * 0.28}
+          ry={radius}
           fill="none"
           stroke="rgba(139,92,246,0.12)"
           strokeWidth={0.8}
         />
         {/* Main circle */}
         <circle
-          cx={SIZE / 2}
-          cy={SIZE / 2}
-          r={RADIUS}
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
           fill="none"
           stroke="rgba(139,92,246,0.15)"
           strokeWidth={1}
@@ -228,8 +243,8 @@ export function TechGlobe() {
         const p = items[i];
         if (!p) return null;
         const { Icon } = tech;
-        const cx = SIZE / 2 + p.x * RADIUS;
-        const cy = SIZE / 2 + p.y * RADIUS;
+        const cx = size / 2 + p.x * radius;
+        const cy = size / 2 + p.y * radius;
         const iconSize = Math.round(14 + p.scale * 20); // 14–34px
         const showLabel = p.z > 0.15;
 

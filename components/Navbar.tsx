@@ -21,7 +21,7 @@ export function Navbar() {
       let current = ids[0];
       for (let i = ids.length - 1; i >= 0; i--) {
         const el = document.getElementById(ids[i]);
-        if (el && el.getBoundingClientRect().top <= 130) {
+        if (el && el.getBoundingClientRect().top <= 140) {
           current = ids[i];
           break;
         }
@@ -34,9 +34,9 @@ export function Navbar() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 py-6">
-      <nav className="section flex items-center justify-center gap-3">
-        <div className="flex h-14 max-w-fit items-center gap-1 rounded-full glass-strong px-6 shadow-xl shadow-black/10">
+    <header className="fixed top-0 left-0 right-0 z-50 py-4 sm:py-6">
+      <nav className="flex items-center justify-center px-4">
+        <div className="flex h-12 sm:h-14 items-center gap-0.5 sm:gap-1 rounded-full glass-strong px-2 sm:px-4 shadow-xl shadow-black/10">
           {navItems.map((item) => {
             const id = item.href.replace("#", "");
             const isActive = active === id;
@@ -44,7 +44,7 @@ export function Navbar() {
               <a
                 key={item.href}
                 href={item.href}
-                className="relative rounded-full px-5 py-2.5 text-sm font-semibold"
+                className="relative rounded-full px-2.5 py-1.5 sm:px-5 sm:py-2.5 text-[11px] sm:text-sm font-semibold transition-colors"
                 style={{ color: isActive ? "var(--foreground)" : "var(--muted)" }}
               >
                 {isActive ? (
@@ -56,15 +56,18 @@ export function Navbar() {
                       opacity: 0.1,
                       border: "1px solid var(--accent)",
                     }}
-                    transition={{ type: "spring", bounce: 0.15, duration: 0.6 }}
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 ) : null}
                 <span className="relative z-10">{item.label}</span>
               </a>
             );
           })}
+          
+          <div className="mx-1 h-4 w-px bg-(--card-border) sm:mx-2" />
+          
+          <ThemeToggle />
         </div>
-        <ThemeToggle />
       </nav>
     </header>
   );

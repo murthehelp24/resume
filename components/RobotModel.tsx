@@ -9,7 +9,7 @@ const ThreeCanvas = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="relative w-[370px] h-[520px] rounded-2xl flex flex-col items-center justify-center">
+      <div className="relative w-[300px] h-[420px] sm:w-[370px] sm:h-[520px] rounded-2xl flex flex-col items-center justify-center">
         {/* Pulsing Glow Aura */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="h-64 w-64 rounded-full bg-(--accent)/10 blur-3xl animate-pulse" />
@@ -28,7 +28,7 @@ const ThreeCanvas = dynamic(
 
 export function RobotModel() {
   return (
-    <div className="relative flex items-center justify-center w-[370px] h-[520px]">
+    <div className="relative flex items-center justify-center w-[300px] h-[420px] sm:w-[370px] sm:h-[520px]">
       <ThreeCanvas />
     </div>
   );

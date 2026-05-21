@@ -26,7 +26,7 @@ export function Projects() {
           </p>
         </div>
 
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:gap-16 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
           {projects
             .filter((p) => p.featured)
             .map((project, index) => (

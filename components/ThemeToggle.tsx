@@ -28,7 +28,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative flex h-9 w-9 items-center justify-center rounded-full glass-strong hover:scale-110 transition-transform"
+      className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full transition-transform hover:scale-110 active:scale-95"
       aria-label="Toggle Theme"
     >
       <motion.div
@@ -40,7 +40,7 @@ export function ThemeToggle() {
         }}
         className="absolute"
       >
-        <Moon size={18} className="text-(--accent)" />
+        <Moon size={16} className="text-(--accent) sm:size-[18px]" />
       </motion.div>
       <motion.div
         initial={false}
@@ -51,7 +51,7 @@ export function ThemeToggle() {
         }}
         className="absolute"
       >
-        <Sun size={18} className="text-(--accent)" />
+        <Sun size={16} className="text-(--accent) sm:size-[18px]" />
       </motion.div>
     </button>
   );
