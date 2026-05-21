@@ -71,7 +71,7 @@ export function Skills() {
           <TechGlobe />
         </motion.div>
         {/* Skill groups — Top */}
-        <div className="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-3">
+        <div className="mx-auto mt-20 grid max-w-5xl gap-4 sm:grid-cols-3">
           {skillGroups.map((group, i) => (
             <motion.div
               key={group.title}

@@ -9,7 +9,7 @@ export function Projects() {
   return (
     <section
       id="projects"
-      className="relative overflow-hidden pt-0 pb-32"
+      className="relative overflow-hidden pt-0 pb-10"
       style={{ scrollMarginTop: "120px" }}
     >
       <div className="section">
@@ -47,11 +47,6 @@ export function Projects() {
             rel="noopener noreferrer"
             className="group mx-auto inline-flex max-w-[min(100%,22rem)] items-center gap-2 px-2 text-center text-sm font-semibold text-(--accent) transition-colors hover:text-(--accent-hover) sm:max-w-none sm:gap-3 sm:text-lg"
           >
-            <span>See all projects on GitHub</span>
-            <ExternalLink
-              size={20}
-              className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
-            />
           </a>
         </motion.div>
       </div>
