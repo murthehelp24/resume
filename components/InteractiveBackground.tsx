@@ -146,15 +146,15 @@ export function InteractiveBackground() {
       "#f0abfc",  // magenta
     ];
     const COMET_COLORS_LIGHT = [
-      "#4f46e5",
-      "#7c3aed",
-      "#9333ea",
-      "#0891b2",
-      "#0e7490",
+      "#f59e0b",
+      "#d97706",
+      "#b45309",
+      "#fbbf24",
+      "#fcd34d",
     ];
 
     const STARBURST_COLORS_DARK = ["#ffffff", "#a5f3fc", "#c084fc", "#fde68a", "#6ee7b7"];
-    const STARBURST_COLORS_LIGHT = ["#6366f1", "#0891b2", "#7c3aed", "#d97706", "#059669"];
+    const STARBURST_COLORS_LIGHT = ["#f59e0b", "#d97706", "#fbbf24", "#d97706", "#fcd34d"];
 
     let raf: number;
     let frameCount = 0;
@@ -199,7 +199,7 @@ export function InteractiveBackground() {
 
       const colors = isDark
         ? ["#ffffff", "#e0f2fe", "#a5f3fc", "#c7d2fe"]
-        : ["#6366f1", "#0891b2", "#4f46e5", "#7c3aed"];
+        : ["#f59e0b", "#fbbf24", "#d97706", "#fcd34d"];
 
       shootingStarsRef.current.push({
         x,
@@ -275,7 +275,7 @@ export function InteractiveBackground() {
         ctx.shadowBlur = 0;
 
         // Tiny sparkle at the head
-        ctx.fillStyle = "#ffffff";
+        ctx.fillStyle = isDark ? "#ffffff" : "#fef3c7";
         ctx.globalAlpha = s.alpha * 0.9;
         ctx.beginPath();
         ctx.arc(s.x, s.y, 1.5, 0, Math.PI * 2);
@@ -355,8 +355,12 @@ export function InteractiveBackground() {
         if (isDark) {
           ctx.shadowColor = "#ffffff";
           ctx.shadowBlur = 18;
+          ctx.fillStyle = "#ffffff";
+        } else {
+          ctx.shadowColor = "#f59e0b";
+          ctx.shadowBlur = 12;
+          ctx.fillStyle = "#fbbf24";
         }
-        ctx.fillStyle = "#ffffff";
         ctx.beginPath();
         ctx.arc(mx, my, 2.8, 0, Math.PI * 2);
         ctx.fill();

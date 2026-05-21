@@ -9,7 +9,7 @@ const ThreeCanvas = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="relative w-[370px] h-[520px] rounded-2xl flex flex-col items-center justify-center bg-radial from-(--card) to-transparent border border-(--card-border)">
+      <div className="relative w-[370px] h-[520px] rounded-2xl flex flex-col items-center justify-center">
         {/* Pulsing Glow Aura */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="h-64 w-64 rounded-full bg-(--accent)/10 blur-3xl animate-pulse" />

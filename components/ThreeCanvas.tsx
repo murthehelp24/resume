@@ -20,7 +20,7 @@ export function ThreeCanvas() {
   }, []);
 
   return (
-    <div className={`relative w-full h-[520px] rounded-2xl overflow-hidden transition-colors duration-500 ${isDark ? "bg-radial from-[#1a0a0a]/60" : "bg-radial from-[#ffffff]/40"} to-transparent`}>
+    <div className="relative w-full h-[520px] rounded-2xl overflow-hidden">
       {/* 3D WebGL Canvas */}
       <Canvas
         shadows
@@ -57,16 +57,6 @@ export function ThreeCanvas() {
             color={isDark ? "#ff5e00" : "#ffffff"}
           />
 
-          {/* Grounding Shadows */}
-          <ContactShadows
-            position={[0, -2.4, 0]}
-            opacity={isDark ? 0.5 : 0.2}
-            scale={10}
-            blur={2.5}
-            far={4}
-            color={isDark ? "#1a0a0a" : "#6b7280"}
-          />
-
           {/* Main Humanoid Model */}
           <ProceduralHumanoid />
 
@@ -81,20 +71,8 @@ export function ThreeCanvas() {
             maxAzimuthAngle={Math.PI / 4}
             makeDefault
           />
-        </Suspense>
-      </Canvas>
-
-      {/* Glossy Floor Platform Glow */}
-      <div
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 pointer-events-none"
-        style={{
-          width: 320,
-          height: 16,
-          borderRadius: "50%",
-          background: "radial-gradient(ellipse, rgba(230, 57, 26, 0.25) 0%, transparent 70%)",
-          filter: "blur(12px)",
-        }}
-      />
-    </div>
-  );
-}
+          </Suspense>
+          </Canvas>
+          </div>
+          );
+          }

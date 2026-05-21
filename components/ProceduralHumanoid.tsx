@@ -4,6 +4,52 @@ import { useRef, useMemo, useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
+function Thruster({ isDark, offset = 0 }: { isDark: boolean; offset?: number }) {
+  const ref = useRef<THREE.Mesh>(null);
+  const glowRef = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    const t = state.clock.getElapsedTime() + offset;
+    if (ref.current) {
+      const s = 1 + Math.sin(t * 20) * 0.1;
+      ref.current.scale.set(s, 1.5 + Math.sin(t * 25) * 0.4, s);
+    }
+    if (glowRef.current) {
+      const gs = 1.2 + Math.sin(t * 20) * 0.2;
+      glowRef.current.scale.set(gs, gs, gs);
+    }
+  });
+
+  return (
+    <group position={[0, -0.35, 0]}>
+      {/* Core Flame */}
+      <mesh ref={ref} rotation={[Math.PI, 0, 0]}>
+        <cylinderGeometry args={[0.02, 0.08, 0.35, 12]} />
+        <meshStandardMaterial
+          color={0xff7e33}
+          emissive={0xff3300}
+          emissiveIntensity={isDark ? 20 : 10}
+          transparent
+          opacity={0.9}
+        />
+      </mesh>
+      {/* Outer Glow */}
+      <mesh ref={glowRef}>
+        <sphereGeometry args={[0.15, 16, 16]} />
+        <meshStandardMaterial
+          color={0xff5500}
+          emissive={0xff2200}
+          emissiveIntensity={isDark ? 12 : 6}
+          transparent
+          opacity={0.35}
+        />
+      </mesh>
+      {/* Point light for local illumination */}
+      <pointLight color={0xff4400} intensity={isDark ? 2 : 1} distance={1.5} />
+    </group>
+  );
+}
+
 export function ProceduralHumanoid() {
   const [isDark, setIsDark] = useState(true);
 
@@ -271,6 +317,7 @@ export function ProceduralHumanoid() {
               <mesh position={[0, -0.25, 0.1]} material={materials.whiteArmor}>
                 <boxGeometry args={[0.18, 0.1, 0.3]} />
               </mesh>
+              <Thruster isDark={isDark} offset={0} />
             </group>
           </group>
         </group>
@@ -297,6 +344,7 @@ export function ProceduralHumanoid() {
               <mesh position={[0, -0.25, 0.1]} material={materials.whiteArmor}>
                 <boxGeometry args={[0.18, 0.1, 0.3]} />
               </mesh>
+              <Thruster isDark={isDark} offset={Math.PI} />
             </group>
           </group>
         </group>
