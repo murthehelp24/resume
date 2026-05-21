@@ -129,6 +129,26 @@ export function ProceduralHumanoid({ isDark }: { isDark: boolean }) {
       headGroupRef.current.rotation.y = THREE.MathUtils.lerp(headGroupRef.current.rotation.y, tx, 0.1);
       headGroupRef.current.rotation.x = THREE.MathUtils.lerp(headGroupRef.current.rotation.x, -ty, 0.1);
     }
+
+    // Laser Tracking Logic
+    if (document.documentElement.getAttribute("data-firing") === "true") {
+      const leftEye = new THREE.Vector3();
+      const rightEye = new THREE.Vector3();
+      leftEyeRef.current?.getWorldPosition(leftEye);
+      rightEyeRef.current?.getWorldPosition(rightEye);
+      
+      leftEye.project(state.camera);
+      rightEye.project(state.camera);
+
+      const toScreen = (vec: THREE.Vector3) => ({
+        x: (vec.x * 0.5 + 0.5) * state.size.width,
+        y: (-vec.y * 0.5 + 0.5) * state.size.height,
+      });
+
+      window.dispatchEvent(new CustomEvent("laser-pos", {
+        detail: { left: toScreen(leftEye), right: toScreen(rightEye) }
+      }));
+    }
   });
 
   return (
