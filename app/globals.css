@@ -3,15 +3,30 @@
 :root {
   --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, sans-serif;
-  --background: #0a0a0f;
-  --foreground: #e4e4e7;
-  --muted: #a1a1aa;
-  --accent: #8b5cf6;
-  --accent-hover: #a78bfa;
-  --card: #18181b;
-  --card-border: #27272a;
-  --gradient-start: #6366f1;
-  --gradient-end: #ec4899;
+  
+  /* Light Mode - Liquid Silver (Inspired by the Cup) */
+  --background: #e5e7eb;     /* Silver-grey body of the cup */
+  --foreground: #0d0707;     /* Black text on cup */
+  --muted: #6b7280;
+  --accent: #e6391a;         /* Vermilion Red stickers */
+  --accent-hover: #ff4d2e;
+  --card: #f9fafb;
+  --card-border: #d1d5db;
+  --gradient-start: #e6391a;
+  --gradient-end: #6b7280;
+}
+
+.dark {
+  /* Dark Mode - Exclusive Mahogany (Inspired by the Background) */
+  --background: #0d0707;     /* Deep Mahogany Black */
+  --foreground: #f3f3f3;     /* Off-white / Cream */
+  --muted: #8b7d7d;
+  --accent: #e6391a;         /* Bold Orange-Red (Vermilion) */
+  --accent-hover: #ff4d2e;
+  --card: #150d0d;
+  --card-border: #261a1a;
+  --gradient-start: #e6391a;
+  --gradient-end: #1a0a0a;
 }
 
 html,
@@ -56,20 +71,20 @@ a {
 .glass {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--background), transparent 90%);
+  border: 1px solid var(--card-border);
 }
 
 .glass-strong {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--card-border);
-  background: rgba(24, 24, 27, 0.8);
+  background: color-mix(in srgb, var(--card), transparent 20%);
 }
 
 .gradient-text {
   background: linear-gradient(135deg,
-      var(--gradient-start),
+      var(--accent),
       var(--gradient-end));
   -webkit-background-clip: text;
   background-clip: text;
@@ -90,9 +105,9 @@ a {
   display: inline-block;
   background-image: linear-gradient(110deg,
       transparent 45%,
-      rgba(255, 255, 255, 0.7) 50%,
+      rgba(255, 255, 255, 0.4) 50%,
       transparent 55%),
-    linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    linear-gradient(135deg, var(--accent), var(--gradient-end));
   background-size: 200% 100%, 100% 100%;
   background-clip: text;
   -webkit-background-clip: text;

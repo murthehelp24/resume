@@ -1,13 +1,26 @@
 "use client";
-
+import { useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { OrbitControls, Stage, Environment, ContactShadows } from "@react-three/drei";
 import { ProceduralHumanoid } from "./ProceduralHumanoid";
 
 export function ThreeCanvas() {
+  const [isDark, setIsDark] = useState(true);
+
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    };
+    checkTheme();
+
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="relative w-full h-[520px] rounded-2xl overflow-hidden bg-radial from-[#131124]/40 to-transparent">
+    <div className={`relative w-full h-[520px] rounded-2xl overflow-hidden transition-colors duration-500 ${isDark ? "bg-radial from-[#1a0a0a]/60" : "bg-radial from-[#ffffff]/40"} to-transparent`}>
       {/* 3D WebGL Canvas */}
       <Canvas
         shadows
@@ -16,52 +29,47 @@ export function ThreeCanvas() {
         className="w-full h-full cursor-grab active:cursor-grabbing"
       >
         <Suspense fallback={null}>
-          {/* High-quality Environment for reflections */}
-          <Environment preset="city" intensity={0.6} />
+          {/* Environment adapts to theme */}
+          <Environment preset={isDark ? "studio" : "city"} intensity={isDark ? 0.4 : 0.8} />
 
-          {/* Moody Studio Lighting Setup */}
-          <ambientLight intensity={0.2} />
+          {/* Lighting Setup */}
+          <ambientLight intensity={isDark ? 0.2 : 0.5} />
 
-          {/* Key Light (Strong Highlight, Top-Left) */}
+          {/* Key Light */}
           <directionalLight
             position={[-5, 8, 4]}
-            intensity={1.5}
+            intensity={isDark ? 1.2 : 1.5}
+            color={isDark ? "#e6391a" : "#ffffff"}
             castShadow
-            shadow-mapSize={[1024, 1024]}
           />
 
-          {/* Fill Light (Soft Blue, Front-Right) */}
+          {/* Fill Light */}
           <directionalLight
             position={[5, 3, 2]}
-            intensity={0.8}
-            color="#93c5fd"
+            intensity={isDark ? 0.6 : 0.4}
+            color={isDark ? "#f3f3f3" : "#e5e7eb"}
           />
 
-          {/* Rim Backlight (Glowing Purple, Back-Right) */}
+          {/* Rim Lights for depth */}
           <pointLight
             position={[4, 2, -4]}
-            intensity={2}
-            color="#a78bfa"
-          />
-
-          {/* Direct Rim Backlight (Pink/Violet, Back-Left) */}
-          <pointLight
-            position={[-4, 1, -4]}
-            intensity={1.5}
-            color="#ec4899"
+            intensity={isDark ? 1.5 : 0.8}
+            color={isDark ? "#ff5e00" : "#ffffff"}
           />
 
           {/* Grounding Shadows */}
           <ContactShadows
             position={[0, -2.4, 0]}
-            opacity={0.4}
+            opacity={isDark ? 0.5 : 0.2}
             scale={10}
             blur={2.5}
             far={4}
+            color={isDark ? "#1a0a0a" : "#6b7280"}
           />
 
           {/* Main Humanoid Model */}
           <ProceduralHumanoid />
+
 
           {/* Orbit Controls (constrained so user can rotate, but it stays locked on the hero section) */}
           <OrbitControls
@@ -83,7 +91,7 @@ export function ThreeCanvas() {
           width: 320,
           height: 16,
           borderRadius: "50%",
-          background: "radial-gradient(ellipse, rgba(139, 92, 246, 0.25) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse, rgba(230, 57, 26, 0.25) 0%, transparent 70%)",
           filter: "blur(12px)",
         }}
       />

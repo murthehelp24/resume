@@ -13,7 +13,7 @@ export function Contact() {
       title: "GitHub",
       desc: "Check out my source code and projects.",
       href: socials.find((s) => s.name === "GitHub")?.url ?? "#",
-      color: "from-violet-500 to-purple-500",
+      color: "from-red-600 to-(--accent)",
     },
     {
       key: "resume",

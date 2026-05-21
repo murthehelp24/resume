@@ -38,7 +38,7 @@ export function About() {
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:grid-rows-[9rem_auto_9rem]">
         {/* Mobile: Name card */}
         <article className="md:hidden col-span-1 row-span-1 rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-6">
-          <p className="text-xs uppercase tracking-[0.2em] text-violet-300">Profile</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-(--accent)">Profile</p>
           <h3 className="mt-2 text-3xl font-black leading-[1.05]">ART</h3>
           <p className="mt-2 text-xs text-(--muted)">Full Stack Developer</p>
         </article>
@@ -57,7 +57,7 @@ export function About() {
         {/* Desktop: Name card */}
         <article className="hidden md:flex col-span-1 row-span-1 rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-7">
           <div className="flex w-full flex-col justify-center text-center">
-            <p className="text-xs uppercase tracking-[0.2em] text-violet-300">Profile</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-(--accent)">Profile</p>
             <h3 className="mt-2 text-4xl font-black leading-[1.05]">ART</h3>
             <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-(--muted)">
               Full Stack Developer
@@ -69,7 +69,7 @@ export function About() {
         <article
           onMouseEnter={() => setActiveTile("education")}
           onMouseLeave={() => setActiveTile(null)}
-          className="col-span-2 row-span-1 rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-5 transition-all duration-200 hover:border-violet-400/40"
+          className="col-span-2 row-span-1 rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-5 transition-all duration-200 hover:border-(--accent)/40"
         >
           <h3 className="text-sm font-bold uppercase text-(--foreground)">
             🎓 Education
@@ -84,7 +84,7 @@ export function About() {
         <article
           onMouseEnter={() => setActiveTile("work")}
           onMouseLeave={() => setActiveTile(null)}
-          className="col-span-1 row-span-2 rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-5 md:col-start-3 md:row-start-2 transition-all duration-200 hover:border-violet-400/40"
+          className="col-span-1 row-span-2 rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-5 md:col-start-3 md:row-start-2 transition-all duration-200 hover:border-(--accent)/40"
         >
           <h3 className="text-sm font-bold">🛠️ Stack</h3>
           <p className="mt-2 text-xs leading-relaxed text-(--muted) sm:text-sm">
@@ -106,7 +106,7 @@ export function About() {
         <article
           onMouseEnter={() => setActiveTile("location")}
           onMouseLeave={() => setActiveTile(null)}
-          className="col-span-1 row-span-1 h-full min-h-[9rem] rounded-2xl border border-(--card-border) overflow-hidden relative transition-all duration-200 hover:border-violet-400/40"
+          className="col-span-1 row-span-1 h-full min-h-[9rem] rounded-2xl border border-(--card-border) overflow-hidden relative transition-all duration-200 hover:border-(--accent)/40"
         >
           <Image
             src={TILE_IMAGES.location}
@@ -126,7 +126,7 @@ export function About() {
         <article
           onMouseEnter={() => setActiveTile("mindset")}
           onMouseLeave={() => setActiveTile(null)}
-          className="col-span-1 row-span-2 rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-5 md:col-start-1 md:row-start-2 transition-all duration-200 hover:border-violet-400/40"
+          className="col-span-1 row-span-2 rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-5 md:col-start-1 md:row-start-2 transition-all duration-200 hover:border-(--accent)/40"
         >
           <h3 className="text-sm font-bold">💡 Mindset</h3>
           <p className="mt-2 text-xs leading-relaxed text-(--muted) sm:text-sm">

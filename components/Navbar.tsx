@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
   { href: "#home", label: "Home" },
@@ -34,8 +35,8 @@ export function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 py-6">
-      <nav className="section">
-        <div className="mx-auto flex h-14 max-w-fit items-center gap-1 rounded-full glass-strong px-6 shadow-xl shadow-black/10">
+      <nav className="section flex items-center justify-center gap-3">
+        <div className="flex h-14 max-w-fit items-center gap-1 rounded-full glass-strong px-6 shadow-xl shadow-black/10">
           {navItems.map((item) => {
             const id = item.href.replace("#", "");
             const isActive = active === id;
@@ -63,6 +64,7 @@ export function Navbar() {
             );
           })}
         </div>
+        <ThemeToggle />
       </nav>
     </header>
   );

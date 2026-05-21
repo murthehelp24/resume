@@ -79,14 +79,14 @@ export function Skills() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-5 transition-all duration-200 hover:border-violet-400/40"
+              className="rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-5 transition-all duration-200 hover:border-orange-400/40"
             >
               <h3 className="text-base font-semibold">{group.title}</h3>
               <p className="mt-1 text-xs text-(--muted)">{group.summary}</p>
               <ul className="mt-3 space-y-1.5 text-sm text-(--muted)">
                 {group.items.map((item) => (
                   <li key={item} className="flex items-start gap-1.5">
-                    <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-violet-400/60" />
+                    <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-400/60" />
                     {item}
                   </li>
                 ))}
