@@ -322,7 +322,9 @@ export function TechGlobe() {
       {PARTICLES.map((_, i) => (
         <div
           key={`p-${i}`}
-          ref={(el) => (particlesRef.current[i] = el)}
+          ref={(el) => {
+            particlesRef.current[i] = el;
+          }}
           className={`absolute h-1 w-1 rounded-full pointer-events-none ${isDark ? "bg-white/40" : "bg-violet-600/40"}`}
           style={{
             left: "50%",
@@ -338,7 +340,9 @@ export function TechGlobe() {
         return (
           <div
             key={tech.name}
-            ref={(el) => (itemsRef.current[i] = el)}
+            ref={(el) => {
+              itemsRef.current[i] = el;
+            }}
             className="absolute flex flex-col items-center pointer-events-none"
             style={{
               left: "50%",
