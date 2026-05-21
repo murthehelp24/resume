@@ -39,8 +39,8 @@ export function About() {
         {/* Mobile: Name card */}
         <article className="md:hidden col-span-1 row-span-1 rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-6">
           <p className="text-xs uppercase tracking-[0.2em] text-(--accent)">Profile</p>
-          <h3 className="mt-2 text-3xl font-black leading-[1.05]">ART</h3>
-          <p className="mt-2 text-xs text-(--muted)">Full Stack Developer</p>
+          <h3 className="mt-2 text-3xl font-black leading-[1.05]">ATTACHAI</h3>
+          <p className="mt-2 text-xs text-(--muted)">Fullstack Developer</p>
         </article>
 
         {/* Mobile: photo */}
@@ -58,9 +58,9 @@ export function About() {
         <article className="hidden md:flex col-span-1 row-span-1 rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-7">
           <div className="flex w-full flex-col justify-center text-center">
             <p className="text-xs uppercase tracking-[0.2em] text-(--accent)">Profile</p>
-            <h3 className="mt-2 text-4xl font-black leading-[1.05]">ART</h3>
+            <h3 className="mt-2 text-4xl font-black leading-[1.05]">ATTACHAI</h3>
             <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-(--muted)">
-              Full Stack Developer
+              Fullstack Developer
             </p>
           </div>
         </article>
@@ -75,8 +75,9 @@ export function About() {
             🎓 Education
           </h3>
           <p className="mt-2 text-xs leading-relaxed text-(--muted) sm:text-sm">
-            Studying Computer Science or IT — always learning new things and
-            hands-on with real projects.
+            CodeCamp Fullstack Developer #22 (2026). Previously earned a High Vocational
+            Certificate in Electrical Power Technology from Udon Thani Technical
+            College.
           </p>
         </article>
 
@@ -88,10 +89,18 @@ export function About() {
         >
           <h3 className="text-sm font-bold">🛠️ Stack</h3>
           <p className="mt-2 text-xs leading-relaxed text-(--muted) sm:text-sm">
-            Love shipping real products, focusing on clean code and great user experience.
+            Passionate about building full-stack applications with modern technologies.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
-            {["Next.js", "React", "TypeScript", "Prisma", "Tailwind"].map((t) => (
+            {[
+              "React",
+              "Node.js",
+              "Express",
+              "Next.js",
+              "Prisma",
+              "MySQL",
+              "Tailwind",
+            ].map((t) => (
               <span
                 key={t}
                 className="rounded-full border border-white/15 px-2 py-1 text-[10px] text-(--muted)"
@@ -130,7 +139,8 @@ export function About() {
         >
           <h3 className="text-sm font-bold">💡 Mindset</h3>
           <p className="mt-2 text-xs leading-relaxed text-(--muted) sm:text-sm">
-            Believe in consistency, ownership, and learning fundamentals first.
+            Transitioning from electrical engineering with a strong logical foundation
+            and a growth mindset.
           </p>
           <div className="mt-4 overflow-hidden rounded-xl border border-white/10">
             <Image

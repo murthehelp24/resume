@@ -42,11 +42,13 @@ export function Projects() {
           className="mt-16 text-center"
         >
           <a
-            href="https://github.com/yourusername"
+            href="https://github.com/murthehelp24"
             target="_blank"
             rel="noopener noreferrer"
             className="group mx-auto inline-flex max-w-[min(100%,22rem)] items-center gap-2 px-2 text-center text-sm font-semibold text-(--accent) transition-colors hover:text-(--accent-hover) sm:max-w-none sm:gap-3 sm:text-lg"
           >
+            <span>See more on GitHub</span>
+            <ExternalLink size={18} className="transition-transform group-hover:translate-x-1" />
           </a>
         </motion.div>
       </div>

@@ -11,24 +11,20 @@ export interface Social {
 export const socials: Social[] = [
   {
     name: "GitHub",
-    url: "https://github.com/yourusername",
+    url: "https://github.com/murthehelp24",
     icon: FaGithub,
   },
   {
-    name: "LinkedIn",
-    url: "https://www.linkedin.com/in/yourusername/",
-    icon: FaLinkedin,
-  },
-  {
     name: "Email",
-    url: "mailto:your@email.com",
+    url: "mailto:attachaijumpahom@gmail.com",
     icon: Mail,
   },
 ];
 
 export const siteConfig = {
-  name: "Attachai",
-  title: "Full Stack Developer",
-  description: "I build useful products with modern web stack",
-  initials: "A",
+  name: "Attachai Jumpahom",
+  title: "Fullstack Developer",
+  description:
+    "Highly motivated professional transitioning from Electrical Power Technology to Software Development. I build efficient, scalable solutions as a Fullstack Developer.",
+  initials: "AJ",
 };
