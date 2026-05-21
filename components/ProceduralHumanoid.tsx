@@ -140,9 +140,11 @@ export function ProceduralHumanoid({ isDark }: { isDark: boolean }) {
       leftEye.project(state.camera);
       rightEye.project(state.camera);
 
+      const rect = state.gl.domElement.getBoundingClientRect();
+
       const toScreen = (vec: THREE.Vector3) => ({
-        x: (vec.x * 0.5 + 0.5) * state.size.width,
-        y: (-vec.y * 0.5 + 0.5) * state.size.height,
+        x: rect.left + (vec.x * 0.5 + 0.5) * state.size.width,
+        y: rect.top + (-vec.y * 0.5 + 0.5) * state.size.height,
       });
 
       window.dispatchEvent(new CustomEvent("laser-pos", {
