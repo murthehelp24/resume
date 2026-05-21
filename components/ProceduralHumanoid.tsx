@@ -223,16 +223,16 @@ export function ProceduralHumanoid() {
           <mesh material={materials.whiteArmor}>
             <cylinderGeometry args={[0.18, 0.18, 0.12, 32]} />
           </mesh>
-          <mesh position={[0, 0.07, 0]} material={materials.accentGlow}>
-            <torusGeometry args={[0.12, 0.02, 16, 32]} rotation={[Math.PI / 2, 0, 0]} />
+          <mesh position={[0, 0.07, 0]} rotation={[Math.PI / 2, 0, 0]} material={materials.accentGlow}>
+            <torusGeometry args={[0.12, 0.02, 16, 32]} />
           </mesh>
         </group>
         <group position={[0.52, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
           <mesh material={materials.whiteArmor}>
             <cylinderGeometry args={[0.18, 0.18, 0.12, 32]} />
           </mesh>
-          <mesh position={[0, 0.07, 0]} material={materials.accentGlow}>
-            <torusGeometry args={[0.12, 0.02, 16, 32]} rotation={[Math.PI / 2, 0, 0]} />
+          <mesh position={[0, 0.07, 0]} rotation={[Math.PI / 2, 0, 0]} material={materials.accentGlow}>
+            <torusGeometry args={[0.12, 0.02, 16, 32]} />
           </mesh>
         </group>
 

@@ -30,7 +30,7 @@ export function ThreeCanvas() {
       >
         <Suspense fallback={null}>
           {/* Environment adapts to theme */}
-          <Environment preset={isDark ? "studio" : "city"} intensity={isDark ? 0.4 : 0.8} />
+          <Environment preset={isDark ? "studio" : "city"} />
 
           {/* Lighting Setup */}
           <ambientLight intensity={isDark ? 0.2 : 0.5} />

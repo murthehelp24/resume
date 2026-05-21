@@ -7,11 +7,6 @@ export function Hero() {
       id="home"
       className="section relative flex min-h-[100svh] items-center overflow-hidden pb-32 pt-24 sm:pt-32 lg:min-h-[112vh]"
     >
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-28 -left-20 h-72 w-72 rounded-full bg-(--accent)/10 blur-3xl" />
-        <div className="absolute right-0 bottom-6 h-72 w-72 rounded-full bg-orange-500/10 blur-3xl" />
-      </div>
-
       <div className="grid w-full items-end gap-10 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-6">
           <p className="text-xs uppercase tracking-[0.25em] text-orange-300 sm:text-sm">
