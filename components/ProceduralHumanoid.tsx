@@ -127,8 +127,9 @@ export function ProceduralHumanoid() {
       chestGroupRef.current.scale.set(b, b, b);
     }
 
-    // Blinking logic
-    const blink = Math.sin(time * 0.5) > 0.98 ? 0.1 : 1.0;
+    // Blinking logic (Gentler & Less frequent)
+    const blinkTrigger = Math.sin(time * 2);
+    const blink = blinkTrigger > 0.94 ? 0.1 : 1.0;
     if (leftEyeRef.current) leftEyeRef.current.scale.y = THREE.MathUtils.lerp(leftEyeRef.current.scale.y, blink, 0.4);
     if (rightEyeRef.current) rightEyeRef.current.scale.y = THREE.MathUtils.lerp(rightEyeRef.current.scale.y, blink, 0.4);
 
