@@ -26,7 +26,7 @@ export function Footer() {
 
           <div className="flex items-center gap-5">
             {socials.map((social) => {
-              const Icon = social.icon as React.ElementType;
+              const Icon = social.icon as any;
               return (
                 <a
                   key={social.name}

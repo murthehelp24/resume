@@ -75,7 +75,10 @@ export function Contact() {
               <div className="relative z-10 flex flex-col items-center gap-4 text-center">
                 <div className={`h-16 w-16 rounded-2xl bg-linear-to-br ${item.color} p-0.5`}>
                   <div className="flex h-full w-full items-center justify-center rounded-2xl bg-(--background)">
-                    <item.icon size={32} style={{ color: "var(--foreground)" }} />
+                    {(() => {
+                      const Icon = item.icon as any;
+                      return <Icon size={32} style={{ color: "var(--foreground)" }} />;
+                    })()}
                   </div>
                 </div>
                 <div>

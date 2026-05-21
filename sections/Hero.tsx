@@ -1,4 +1,5 @@
 import { siteConfig, socials } from "@/data/config";
+import { RobotModel } from "@/components/RobotModel";
 
 export function Hero() {
   return (
@@ -45,7 +46,7 @@ export function Hero() {
 
           <div className="flex items-center gap-4 pt-2">
             {socials.map((social) => {
-              const Icon = social.icon as React.ElementType;
+              const Icon = social.icon as any;
               return (
                 <a
                   key={social.name}
@@ -62,35 +63,8 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-6">
-          <div className="mb-5 flex items-center justify-between">
-            <span className="text-xs uppercase tracking-[0.2em] text-(--muted)">
-              Tech Stack
-            </span>
-            <span className="rounded-full border border-white/15 px-2 py-0.5 text-[10px] text-(--muted)">
-              2026
-            </span>
-          </div>
-          <ul className="space-y-2 text-sm text-(--muted)">
-            <li>⚡ Next.js + TypeScript + Tailwind CSS</li>
-            <li>🗄️ Prisma + SQLite / PostgreSQL</li>
-            <li>🔐 Authentication &amp; Authorization</li>
-            <li>🚀 Vercel deployment ready</li>
-          </ul>
-          <div className="mt-5 grid grid-cols-3 gap-2 border-t border-white/10 pt-4 text-center">
-            <div>
-              <p className="text-lg font-bold text-(--foreground)">4+</p>
-              <p className="text-[10px] uppercase tracking-wider text-(--muted)">Projects</p>
-            </div>
-            <div>
-              <p className="text-lg font-bold text-(--foreground)">Full</p>
-              <p className="text-[10px] uppercase tracking-wider text-(--muted)">Stack</p>
-            </div>
-            <div>
-              <p className="text-lg font-bold text-(--foreground)">TH</p>
-              <p className="text-[10px] uppercase tracking-wider text-(--muted)">Bangkok</p>
-            </div>
-          </div>
+        <div className="flex items-center justify-center">
+          <RobotModel />
         </div>
       </div>
     </section>
