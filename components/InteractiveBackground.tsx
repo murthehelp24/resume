@@ -120,9 +120,9 @@ export function InteractiveBackground() {
         mousePos.current = { x: touch.clientX, y: touch.clientY };
         setCoords({ x: Math.round(touch.clientX), y: Math.round(touch.clientY) });
 
-        // Mobile delay: hold for 2 seconds
+        // Mobile delay: hold for 1 second
         if (touchTimeoutRef.current) clearTimeout(touchTimeoutRef.current);
-        touchTimeoutRef.current = setTimeout(startFiring, 2000);
+        touchTimeoutRef.current = setTimeout(startFiring, 1000);
       } else {
         // Immediate for desktop
         startFiring();
