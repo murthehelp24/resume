@@ -95,23 +95,38 @@ export function InteractiveBackground() {
 
   // ── Click to Fire ──────────────────────────────────────────────────────────
   useEffect(() => {
-    const handleMouseDown = () => {
+    const handleStart = (e: MouseEvent | TouchEvent) => {
+      if ("touches" in e) {
+        const touch = e.touches[0];
+        mouseX.set(touch.clientX);
+        mouseY.set(touch.clientY);
+        mousePos.current = { x: touch.clientX, y: touch.clientY };
+        setCoords({ x: Math.round(touch.clientX), y: Math.round(touch.clientY) });
+      }
       setIsFiring(true);
       isFiringRef.current = true;
       document.documentElement.setAttribute("data-firing", "true");
     };
-    const handleMouseUp = () => {
+    const handleEnd = () => {
       setIsFiring(false);
       isFiringRef.current = false;
       document.documentElement.setAttribute("data-firing", "false");
     };
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
+
+    window.addEventListener("mousedown", handleStart);
+    window.addEventListener("mouseup", handleEnd);
+    window.addEventListener("touchstart", handleStart, { passive: true });
+    window.addEventListener("touchend", handleEnd);
+    window.addEventListener("touchcancel", handleEnd);
+
     return () => {
-      window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mousedown", handleStart);
+      window.removeEventListener("mouseup", handleEnd);
+      window.removeEventListener("touchstart", handleStart);
+      window.removeEventListener("touchend", handleEnd);
+      window.removeEventListener("touchcancel", handleEnd);
     };
-  }, []);
+  }, [mouseX, mouseY]);
 
   // ── Canvas Sizing ─────────────────────────────────────────────────────────
   useEffect(() => {
