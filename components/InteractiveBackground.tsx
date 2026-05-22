@@ -47,6 +47,7 @@ export function InteractiveBackground() {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [isFiring, setIsFiring] = useState(false);
   const isFiringRef = useRef(false);
+  const touchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // ── Theme observer ────────────────────────────────────────────────────────
   useEffect(() => {
@@ -95,6 +96,22 @@ export function InteractiveBackground() {
 
   // ── Click to Fire ──────────────────────────────────────────────────────────
   useEffect(() => {
+    const startFiring = () => {
+      setIsFiring(true);
+      isFiringRef.current = true;
+      document.documentElement.setAttribute("data-firing", "true");
+    };
+
+    const stopFiring = () => {
+      if (touchTimeoutRef.current) {
+        clearTimeout(touchTimeoutRef.current);
+        touchTimeoutRef.current = null;
+      }
+      setIsFiring(false);
+      isFiringRef.current = false;
+      document.documentElement.setAttribute("data-firing", "false");
+    };
+
     const handleStart = (e: MouseEvent | TouchEvent) => {
       if ("touches" in e) {
         const touch = e.touches[0];
@@ -102,29 +119,29 @@ export function InteractiveBackground() {
         mouseY.set(touch.clientY);
         mousePos.current = { x: touch.clientX, y: touch.clientY };
         setCoords({ x: Math.round(touch.clientX), y: Math.round(touch.clientY) });
+
+        // Mobile delay: hold for 2 seconds
+        if (touchTimeoutRef.current) clearTimeout(touchTimeoutRef.current);
+        touchTimeoutRef.current = setTimeout(startFiring, 2000);
+      } else {
+        // Immediate for desktop
+        startFiring();
       }
-      setIsFiring(true);
-      isFiringRef.current = true;
-      document.documentElement.setAttribute("data-firing", "true");
-    };
-    const handleEnd = () => {
-      setIsFiring(false);
-      isFiringRef.current = false;
-      document.documentElement.setAttribute("data-firing", "false");
     };
 
     window.addEventListener("mousedown", handleStart);
-    window.addEventListener("mouseup", handleEnd);
+    window.addEventListener("mouseup", stopFiring);
     window.addEventListener("touchstart", handleStart, { passive: true });
-    window.addEventListener("touchend", handleEnd);
-    window.addEventListener("touchcancel", handleEnd);
+    window.addEventListener("touchend", stopFiring);
+    window.addEventListener("touchcancel", stopFiring);
 
     return () => {
       window.removeEventListener("mousedown", handleStart);
-      window.removeEventListener("mouseup", handleEnd);
+      window.removeEventListener("mouseup", stopFiring);
       window.removeEventListener("touchstart", handleStart);
-      window.removeEventListener("touchend", handleEnd);
-      window.removeEventListener("touchcancel", handleEnd);
+      window.removeEventListener("touchend", stopFiring);
+      window.removeEventListener("touchcancel", stopFiring);
+      if (touchTimeoutRef.current) clearTimeout(touchTimeoutRef.current);
     };
   }, [mouseX, mouseY]);
 
