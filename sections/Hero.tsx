@@ -1,5 +1,7 @@
 import { siteConfig, socials } from "@/data/config";
 import { RobotModel } from "@/components/RobotModel";
+import { Typewriter } from "@/components/Typewriter";
+import { Download } from "lucide-react";
 
 export function Hero() {
   return (
@@ -14,7 +16,10 @@ export function Hero() {
           </p>
           <h1 className="max-w-3xl text-4xl font-bold leading-[1.1] text-pretty sm:text-6xl lg:text-7xl">
             Hi, I&apos;m{" "}
-            <span className="text-gradient-shimmer">{siteConfig.name}</span>
+            <Typewriter
+              words={["Attachai\nJumpahom"]}
+              textClassName="text-gradient-shimmer"
+            />
             <br />
             <span className="text-2xl sm:text-5xl lg:text-6xl text-(--muted)">
               {siteConfig.title}
@@ -27,15 +32,18 @@ export function Hero() {
           <div className="flex flex-wrap gap-3">
             <a
               href="#projects"
-              className="rounded-full bg-(--accent) px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-(--accent-hover)"
+              className="rounded-full bg-(--accent) px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-(--accent-hover) hover:shadow-lg hover:shadow-(--accent)/20"
             >
               View Projects
             </a>
             <a
-              href="#about"
-              className="rounded-full border border-(--card-border) px-5 py-2 text-sm font-semibold text-(--foreground) transition-colors hover:border-(--accent)/40"
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 rounded-full border border-(--card-border) bg-(--card)/50 px-6 py-2.5 text-sm font-semibold text-(--foreground) transition-all hover:border-(--accent)/40 hover:bg-(--card)"
             >
-              About Me
+              <Download size={18} />
+              Resume
             </a>
           </div>
 

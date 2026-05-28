@@ -11,8 +11,7 @@ const TILE_IMAGES = {
     "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1200&auto=format&fit=crop",
   location:
     "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?q=80&w=1200&auto=format&fit=crop",
-  mindset:
-    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1200&auto=format&fit=crop",
+  mindset: "/projects/run.jpg",
   default:
     "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop",
 } as const;
@@ -139,8 +138,8 @@ export function About() {
         >
           <h3 className="text-sm font-bold">💡 Mindset</h3>
           <p className="mt-2 text-xs leading-relaxed text-(--muted) sm:text-sm">
-            Transitioning from electrical engineering with a strong logical foundation
-            and a growth mindset.
+            I am passionate about health and exercise, especially running. It builds
+            discipline and a growth mindset that I apply to coding.
           </p>
           <div className="mt-4 overflow-hidden rounded-xl border border-white/10">
             <Image
@@ -148,7 +147,7 @@ export function About() {
               alt="Mindset"
               width={700}
               height={900}
-              className="h-44 w-full object-cover"
+              className="h-44 w-full object-cover object-center"
             />
           </div>
         </article>

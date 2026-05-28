@@ -20,7 +20,7 @@ export function Contact() {
       icon: FileText,
       title: "Resume",
       desc: "Download my PDF resume.",
-      href: "#",
+      href: "/resume.pdf",
       color: "from-[#4b5563] to-[#1f2937]", // Slate/Silver theme
     },
     {
@@ -60,8 +60,8 @@ export function Contact() {
             <motion.a
               key={item.key}
               href={item.href}
-              target={item.href.startsWith("http") ? "_blank" : undefined}
-              rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+              target={item.href.startsWith("http") || item.href.endsWith(".pdf") ? "_blank" : undefined}
+              rel={item.href.startsWith("http") || item.href.endsWith(".pdf") ? "noopener noreferrer" : undefined}
               className="group glass relative cursor-pointer overflow-hidden rounded-3xl p-6 transition-all duration-300 hover:scale-105 sm:p-8"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}

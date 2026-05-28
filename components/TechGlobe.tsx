@@ -85,9 +85,14 @@ export function TechGlobe() {
   }, []);
 
   // Extra cosmic particles
-  const PARTICLES = useMemo(() =>
-    fibonacciSphere(24).map(p => ({ ...p, r: Math.random() * 2 + 1 })),
-    []);
+  const PARTICLES = useMemo(() => {
+    const points = fibonacciSphere(24);
+    return points.map(p => {
+      // Use a simple pseudo-random seed based on position to keep it pure-ish
+      const r = ((Math.abs(p.x * 12345.678) + Math.abs(p.y * 54321.098)) % 2) + 1;
+      return { ...p, r };
+    });
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -177,6 +182,7 @@ export function TechGlobe() {
 
     rafRef.current = requestAnimationFrame(tick);
   }, [size, radius, PARTICLES, isDark]);
+
 
   useEffect(() => {
     rafRef.current = requestAnimationFrame(tick);

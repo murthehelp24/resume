@@ -9,9 +9,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Attachai Jumpahom — Fullstack Developer",
+  title: "Attachai | Portfolio",
   description:
-    "Portfolio of Attachai Jumpahom, a Fullstack Developer building efficient, scalable solutions.",
+    "Fullstack Developer specializing in building high-performance, visually stunning web applications with a growth mindset.",
 };
 
 export default function RootLayout({

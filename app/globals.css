@@ -114,3 +114,12 @@ a {
   -webkit-text-fill-color: transparent;
   animation: shimmer-gradient 3s infinite linear;
 }
+
+@keyframes cursor-blink {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-cursor-blink {
+  animation: cursor-blink 0.8s infinite step-end;
+}
