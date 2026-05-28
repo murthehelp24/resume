@@ -20,7 +20,7 @@ export function Contact() {
       icon: FileText,
       title: "Resume",
       desc: "Download my PDF resume.",
-      href: "/resume.pdf",
+      href: "/resume-web.pdf",
       color: "from-[#4b5563] to-[#1f2937]", // Slate/Silver theme
     },
     {

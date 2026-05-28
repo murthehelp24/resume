@@ -37,7 +37,7 @@ export function Hero() {
               View Projects
             </a>
             <a
-              href="/resume.pdf"
+              href="/resume-web.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 rounded-full border border-(--card-border) bg-(--card)/50 px-6 py-2.5 text-sm font-semibold text-(--foreground) transition-all hover:border-(--accent)/40 hover:bg-(--card)"
