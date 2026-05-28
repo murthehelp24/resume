@@ -28,7 +28,7 @@ export const projects: Project[] = [
       "Framer Motion",
     ],
     github: "https://github.com/piecahcih/onlyfriendssss-frontend",
-    demo: "https://onlyfriendssss-frontend.vercel.app/",
+    demo: "https://onlyfriendssss.vercel.app/",
     featured: true,
     deviceType: "mobile",
     bgColor: "bg-linear-to-br from-orange-600/90 to-red-600/90",
