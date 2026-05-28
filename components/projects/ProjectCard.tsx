@@ -149,7 +149,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                             src={screenshots[0]}
                             alt="App screenshot"
                             fill
-                            className="object-cover object-top"
+                            className="object-contain object-top"
                             sizes="(max-width: 768px) 90vw, 50vw"
                             priority={index === 0}
                           />
@@ -241,7 +241,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                             src={screenshots[0]}
                             alt="App screenshot"
                             fill
-                            className="object-cover object-top"
+                            className="object-contain object-top"
                             sizes="(max-width: 768px) 90vw, 50vw"
                             priority={index === 0}
                           />

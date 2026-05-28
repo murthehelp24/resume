@@ -41,11 +41,10 @@ export const projects: Project[] = [
       "Full-stack e-commerce platform using React, Node.js, and Prisma. Features database transactions for reliable inventory management, secure JWT Authentication, and a robust Admin Dashboard with complex filtering.",
     tags: ["React", "Node.js", "Prisma", "MySQL", "Tailwind CSS", "JWT", "Zustand"],
     github: "https://github.com/murthehelp24/Project-Dongcard-New",
+    demo: "https://project-dongcard-new-a2rs.vercel.app",
     featured: true,
     deviceType: "desktop",
     bgColor: "bg-linear-to-br from-blue-600/90 to-indigo-600/90",
-    screenshots: [
-      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1400&auto=format&fit=crop",
-    ],
+    screenshots: ["/projects/image.png"],
   },
 ];
