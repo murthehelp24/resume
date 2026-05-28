@@ -120,8 +120,8 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
                     ) : null}
 
                     <div className="absolute -bottom-16 left-1/2 z-20 w-[48%] -translate-x-1/2 origin-bottom md:-bottom-24">
-                      <div className="relative aspect-9/19 overflow-hidden rounded-t-2xl border-x-4 border-t-4 border-neutral-900 bg-neutral-900 shadow-2xl ring-1 ring-white/10 md:rounded-t-3xl md:border-x-6 md:border-t-6">
-                        <div className="absolute top-0 left-1/2 z-30 h-3 w-[35%] -translate-x-1/2 rounded-b-lg bg-black md:h-5 md:rounded-b-xl" />
+                      <div className="relative aspect-9/18  ">
+                        <div />
                         {screenshots[0] ? (
                           <Image
                             src={screenshots[0]}
