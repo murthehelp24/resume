@@ -47,4 +47,17 @@ export const projects: Project[] = [
     bgColor: "bg-linear-to-br from-blue-600/90 to-indigo-600/90",
     screenshots: ["/projects/image.png"],
   },
+  {
+    id: "job-tackking",
+    title: "Job-tackking - Job Application Tracker",
+    description:
+      "A specialized platform for managing and tracking job applications. Built with Next.js and Prisma, it features a comprehensive dashboard for monitoring application statuses, company details, and progress throughout the recruitment lifecycle.",
+    tags: ["Next.js", "TypeScript", "Prisma", "PostCSS", "Tailwind CSS", "Vercel"],
+    github: "https://github.com/murthehelp24/Job-tackking",
+    demo: "https://job-tackking.vercel.app/",
+    featured: true,
+    deviceType: "mobile",
+    bgColor: "bg-linear-to-br from-indigo-900/90 to-slate-900/90",
+    screenshots: ["/projects/job-tackking.webp"],
+  },
 ];
