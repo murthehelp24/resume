@@ -48,8 +48,8 @@ export const projects: Project[] = [
     screenshots: ["/projects/image.png"],
   },
   {
-    id: "job-tackking",
-    title: "Job-tackking - Job Application Tracker",
+    id: "job-Tracking",
+    title: "Job-Tracking - Job Application Tracker",
     description:
       "A specialized platform for managing and tracking job applications. Built with Next.js and Prisma, it features a comprehensive dashboard for monitoring application statuses, company details, and progress throughout the recruitment lifecycle.",
     tags: ["Next.js", "TypeScript", "Prisma", "PostCSS", "Tailwind CSS", "Vercel"],
