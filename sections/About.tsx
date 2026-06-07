@@ -12,6 +12,7 @@ const TILE_IMAGES = {
   location:
     "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?q=80&w=1200&auto=format&fit=crop",
   mindset: "/projects/run.jpg",
+  certificate: "/projects/certificate1.png",
   default:
     "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop",
 } as const;
@@ -80,35 +81,30 @@ export function About() {
           </p>
         </article>
 
-        {/* Craft */}
-        <article
-          onMouseEnter={() => setActiveTile("work")}
+        {/* Certificates */}
+        <a
+          href="/certificate.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          onMouseEnter={() => setActiveTile("certificate")}
           onMouseLeave={() => setActiveTile(null)}
-          className="col-span-1 row-span-2 rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-5 md:col-start-3 md:row-start-2 transition-all duration-200 hover:border-(--accent)/40"
+          className="col-span-1 row-span-2 rounded-2xl border border-(--card-border) bg-linear-to-br from-(--card) to-(--card-border) p-5 md:col-start-3 md:row-start-2 transition-all duration-200 hover:border-(--accent)/40 group"
         >
-          <h3 className="text-sm font-bold">🛠️ Stack</h3>
+          <h3 className="text-sm font-bold">📜 Certificates</h3>
           <p className="mt-2 text-xs leading-relaxed text-(--muted) sm:text-sm">
-            Passionate about building full-stack applications with modern technologies.
+            Full Stack JavaScript Developer from CodeCamp Thailand and High Vocational
+            in Electrical Power.
           </p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {[
-              "React",
-              "Node.js",
-              "Express",
-              "Next.js",
-              "Prisma",
-              "MySQL",
-              "Tailwind",
-            ].map((t) => (
-              <span
-                key={t}
-                className="rounded-full border border-white/15 px-2 py-1 text-[10px] text-(--muted)"
-              >
-                {t}
-              </span>
-            ))}
+          <div className="mt-4 overflow-hidden rounded-xl border border-white/10">
+            <Image
+              src={TILE_IMAGES.certificate}
+              alt="Certificates"
+              width={700}
+              height={900}
+              className="h-44 w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+            />
           </div>
-        </article>
+        </a>
 
         {/* Location */}
         <article
