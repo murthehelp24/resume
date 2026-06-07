@@ -1,8 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+
+const CERTIFICATE_IMAGES = [
+  "/projects/certificate1.png",
+  "/projects/certificate2.png",
+  "/projects/certificate3.png",
+];
 
 const TILE_IMAGES = {
   education:
@@ -12,16 +18,29 @@ const TILE_IMAGES = {
   location:
     "https://images.unsplash.com/photo-1508193638397-1c4234db14d8?q=80&w=1200&auto=format&fit=crop",
   mindset: "/projects/run.jpg",
-  certificate: "/projects/certificate1.png",
   default:
     "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop",
 } as const;
 
-type TileKey = keyof typeof TILE_IMAGES;
+type TileKey = keyof typeof TILE_IMAGES | "certificate";
 
 export function About() {
   const [activeTile, setActiveTile] = useState<TileKey | null>(null);
-  const currentImage = activeTile ? TILE_IMAGES[activeTile] : TILE_IMAGES.default;
+  const [certIndex, setCertIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCertIndex((prev) => (prev + 1) % CERTIFICATE_IMAGES.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
+  const currentImage =
+    activeTile === "certificate"
+      ? CERTIFICATE_IMAGES[certIndex]
+      : activeTile
+      ? TILE_IMAGES[activeTile as keyof typeof TILE_IMAGES]
+      : TILE_IMAGES.default;
 
   return (
     <section
@@ -95,14 +114,24 @@ export function About() {
             Full Stack JavaScript Developer from CodeCamp Thailand and High Vocational
             in Electrical Power.
           </p>
-          <div className="mt-4 overflow-hidden rounded-xl border border-white/10">
-            <Image
-              src={TILE_IMAGES.certificate}
-              alt="Certificates"
-              width={700}
-              height={900}
-              className="h-44 w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-            />
+          <div className="relative mt-4 h-44 overflow-hidden rounded-xl border border-white/10">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={certIndex}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={CERTIFICATE_IMAGES[certIndex]}
+                  alt="Certificates"
+                  fill
+                  className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                />
+              </motion.div>
+            </AnimatePresence>
           </div>
         </a>
 
