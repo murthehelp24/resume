@@ -20,7 +20,7 @@ export function Contact() {
       icon: FileText,
       title: "Resume",
       desc: "Download my PDF resume.",
-      href: "/resume-web.pdf",
+      href: "/Resume%20Fullstack%20Ver%200.2.pdf",
       color: "from-[#4b5563] to-[#1f2937]", // Slate/Silver theme
     },
     {
