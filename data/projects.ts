@@ -60,4 +60,30 @@ export const projects: Project[] = [
     bgColor: "bg-linear-to-br from-indigo-900/90 to-slate-900/90",
     screenshots: ["/projects/job-tackking.webp"],
   },
+  {
+    id: "parkrun",
+    title: "Park Run Tracker - Real-time NFC Running Tracker",
+    description:
+      "A real-time park run tracking system utilizing NFC wristbands for runner identification. Tracks and calculates lap times in real-time at checkpoints, displaying session progress instantly via Socket.io on a web dashboard. Built on a clean 3-Tier Architecture.",
+    tags: [
+      "React (Vite)",
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Prisma ORM",
+      "Socket.io",
+      "Tailwind CSS",
+      "JWT",
+    ],
+    github: "https://github.com/murthehelp24/The-Park-Run-Tracker",
+    demo: "https://parkrun-five.vercel.app",
+    featured: true,
+    deviceType: "mobile",
+    bgColor: "bg-linear-to-br from-amber-600/90 to-neutral-900/90",
+    screenshots: [
+      "/projects/parkrun-dashboard.png",
+      "/projects/parkrun-history.png",
+      "/projects/parkrun-profile.png",
+    ],
+  },
 ];
