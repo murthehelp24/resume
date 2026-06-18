@@ -80,10 +80,6 @@ export const projects: Project[] = [
     featured: true,
     deviceType: "mobile",
     bgColor: "bg-linear-to-br from-amber-600/90 to-neutral-900/90",
-    screenshots: [
-      "/projects/parkrun-dashboard.png",
-      "/projects/parkrun-history.png",
-      "/projects/parkrun-profile.png",
-    ],
+    screenshots: ["/projects/parkrun-dashboard.png"],
   },
 ];
